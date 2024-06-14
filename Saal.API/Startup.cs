@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Saal.API.Data;
 
 namespace Saal.API
 {
@@ -23,6 +25,11 @@ namespace Saal.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDbContext<SaalContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("SaalContext"));
+            });
+
             services.AddMvc();
             services.AddSwaggerGen(c =>
             {
