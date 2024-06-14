@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Saal.API.Data;
+using Saal.API.Repository;
 
 namespace Saal.API
 {
@@ -36,6 +37,8 @@ namespace Saal.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Saal Test Application", Description = "Code test - Pablo Tejedor.", Version = "v1" });
 
             });
+
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)

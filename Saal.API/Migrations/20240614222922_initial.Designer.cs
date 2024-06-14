@@ -11,7 +11,7 @@ using Saal.API.Data;
 namespace Saal.API.Migrations
 {
     [DbContext(typeof(SaalContext))]
-    [Migration("20240614215235_initial")]
+    [Migration("20240614222922_initial")]
     partial class initial
     {
         /// <inheritdoc />

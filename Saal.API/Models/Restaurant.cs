@@ -5,14 +5,8 @@ namespace Saal.API.Models
     /// <summary>
     /// Model class restaurant.
     /// </summary>
-    public class Restaurant
+    public class Restaurant : Base
     {
-        /// <summary>
-        /// Id key.
-        /// </summary>
-        [Key]
-        public int Id { get; set; }
-
         /// <summary>
         /// Name field.
         /// </summary>

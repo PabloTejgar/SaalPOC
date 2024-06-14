@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Saal.API.Data;
 using Saal.API.Models;
+using Saal.API.Repository;
 
 namespace Saal.API.Controllers
 {
@@ -11,9 +12,9 @@ namespace Saal.API.Controllers
     public class RestaurantController : Controller
     {
         /// <summary>
-        /// SaalContext.
+        /// Repository for restaurant.
         /// </summary>
-        private readonly SaalContext _context;
+        private readonly GenericRepository<Restaurant> _repository;
 
         /// <summary>
         /// Logger instance.
@@ -25,9 +26,9 @@ namespace Saal.API.Controllers
         /// </summary>
         /// <param name="context"></param>
         /// <param name="logger">Logger instance.</param>
-        public RestaurantController(SaalContext context, ILogger<RestaurantController> logger)
+        public RestaurantController(GenericRepository<Restaurant> repository, ILogger<RestaurantController> logger)
         {
-            _context = context;
+            _repository = repository;
             _logger = logger;
         }
 
@@ -42,12 +43,7 @@ namespace Saal.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(int id)
         {
-            if (_context.Restaurant == null)
-            {
-                _logger.LogWarning("Restaurant DB empty.");
-                return NotFound();
-            }
-            var restaurant = await _context.Restaurant.FirstOrDefaultAsync(m => m.Id == id);
+            var restaurant = await _repository.GetById(id);
             if (restaurant == null)
             {
                 _logger.LogWarning("Restaurant not found.");
