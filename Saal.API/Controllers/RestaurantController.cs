@@ -14,7 +14,7 @@ namespace Saal.API.Controllers
         /// <summary>
         /// Repository for restaurant.
         /// </summary>
-        private readonly GenericRepository<Restaurant> _repository;
+        private readonly IGenericRepository<Restaurant> _repository;
 
         /// <summary>
         /// Logger instance.
@@ -26,7 +26,7 @@ namespace Saal.API.Controllers
         /// </summary>
         /// <param name="context"></param>
         /// <param name="logger">Logger instance.</param>
-        public RestaurantController(GenericRepository<Restaurant> repository, ILogger<RestaurantController> logger)
+        public RestaurantController(IGenericRepository<Restaurant> repository, ILogger<RestaurantController> logger)
         {
             _repository = repository;
             _logger = logger;
