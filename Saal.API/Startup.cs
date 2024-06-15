@@ -43,6 +43,7 @@ namespace Saal.API
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped(typeof(IRestaurantService), typeof(RestaurantService));
+            services.AddScoped(typeof(ICityService), typeof(CityService));
             services.AddAutoMapper(typeof(MappingProfile));
         }
 

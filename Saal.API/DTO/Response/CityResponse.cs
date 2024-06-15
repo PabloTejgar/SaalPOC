@@ -16,10 +16,5 @@ namespace Saal.API.DTO.Response
         /// Name field.
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// Restaurants field.
-        /// </summary>
-        public ICollection<Restaurant> Restaurants { get; set; }
     }
 }

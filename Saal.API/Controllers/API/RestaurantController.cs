@@ -1,9 +1,6 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Saal.API.DTO.Request;
 using Saal.API.DTO.Response;
-using Saal.API.Models;
-using Saal.API.Repository;
 using Saal.API.Services.Interfaces;
 using System.Net;
 

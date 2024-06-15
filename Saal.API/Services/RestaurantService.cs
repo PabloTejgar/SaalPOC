@@ -151,7 +151,6 @@ namespace Saal.API.Services
                 Content = new ObjectContent<IEnumerable<RestaurantResponse>>(restaurantlistResponse, new JsonMediaTypeFormatter()),
                 StatusCode = HttpStatusCode.OK,
             };
-
         }
 
         /// <summary>
