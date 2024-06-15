@@ -25,11 +25,16 @@ namespace Saal.API.Models
         [Required]
         public string Phone { get; set; }
 
+
+        /// <summary>
+        /// CityId field.
+        /// </summary>
+        public int CityId { get; set; }
+
         /// <summary>
         /// City field.
         /// </summary>
-        [Required]
-        public string City { get; set; }
+        public City City { get; set; }
 
 
     }

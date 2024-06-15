@@ -12,8 +12,8 @@ using Saal.API.Data;
 namespace Saal.API.Migrations
 {
     [DbContext(typeof(SaalContext))]
-    [Migration("20240615150451_expandRestaurant")]
-    partial class expandRestaurant
+    [Migration("20240615152853_expandRestaurants")]
+    partial class expandRestaurants
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,6 +43,35 @@ namespace Saal.API.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
+
+                    b.ToTable("City");
+                });
+
+            modelBuilder.Entity("Saal.API.Models.Restaurant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Restaurant");
                 });

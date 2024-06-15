@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Saal.API.Data;
 
@@ -11,9 +12,11 @@ using Saal.API.Data;
 namespace Saal.API.Migrations
 {
     [DbContext(typeof(SaalContext))]
-    partial class SaalContextModelSnapshot : ModelSnapshot
+    [Migration("20240615161012_OneToManyCity")]
+    partial class OneToManyCity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
