@@ -26,12 +26,13 @@ namespace Saal.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddControllersWithViews();
+            services.AddHttpClient();
             services.AddDbContext<SaalContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("SaalContext"));
             });
 
-            services.AddMvc();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Saal Test Application", Description = "Code test - Pablo Tejedor.", Version = "v1" });
@@ -53,6 +54,9 @@ namespace Saal.API
                 app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
             app.UseRouting();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -63,6 +67,9 @@ namespace Saal.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                        name: "default",
+                        pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
         }

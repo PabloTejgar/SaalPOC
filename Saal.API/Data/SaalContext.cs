@@ -21,6 +21,12 @@ namespace Saal.API.Data
         /// <summary>
         /// Restaurant db set.
         /// </summary>
-        public DbSet<City> Restaurant { get; set; }
+        public DbSet<Restaurant> Restaurant { get; set; }
+
+        /// <summary>
+        /// City db set.
+        /// </summary>
+        public DbSet<City> City { get; set; }
+
     }
 }

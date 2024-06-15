@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Saal.API": {
+    "SAAL.Swagger": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -10,7 +10,16 @@
       "applicationUrl": "https://localhost:8080;",
       "dotnetRunMessages": true
     },
-    "Container (Dockerfile)": {
+    "SAAL.Web": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "SAAL.Web (Container)": {
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",

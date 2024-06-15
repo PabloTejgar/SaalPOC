@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Saal.API.Models;
 using Saal.API.Repository;
 
-namespace Saal.API.Controllers
+namespace Saal.API.Controllers.API
 {
     [ApiController]
     [Route("[controller]")]

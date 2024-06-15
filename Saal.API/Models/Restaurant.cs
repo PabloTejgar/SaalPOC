@@ -14,6 +14,18 @@ namespace Saal.API.Models
         public string Name { get; set; }
 
         /// <summary>
+        /// Address field.
+        /// </summary>
+        [Required]
+        public string Address { get; set; }
+
+        /// <summary>
+        /// Phone field.
+        /// </summary>
+        [Required]
+        public string Phone { get; set; }
+
+        /// <summary>
         /// City field.
         /// </summary>
         [Required]
