@@ -14,7 +14,6 @@ namespace Saal.API.Models
     /// <summary>
     /// Restaurants field.
     /// </summary>
-    public ICollection<City> Restaurants { get; set; }
-
+    public ICollection<Restaurant> Restaurants { get; set; } 
     }
 }

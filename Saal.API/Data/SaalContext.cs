@@ -28,5 +28,20 @@ namespace Saal.API.Data
         /// </summary>
         public DbSet<City> City { get; set; }
 
+        /// <summary>
+        /// OnModelCreating override method.
+        /// </summary>
+        /// <param name="modelBuilder"></param>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<City>().HasData(
+                new City { Id = 1, Name = "León"  },
+                new City { Id = 2, Name = "London" },
+                new City { Id = 3, Name = "Berlin" },
+                new City { Id = 4, Name = "Rome" }
+                );
+        }
+
     }
 }

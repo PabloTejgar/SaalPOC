@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
+using Saal.API.DTO.Request;
 using Saal.API.Models;
 using Saal.API.Repository;
+using Saal.API.Services.Interfaces;
+using System.Net;
 
 namespace Saal.API.Controllers.API
 {
@@ -14,7 +18,7 @@ namespace Saal.API.Controllers.API
         /// <summary>
         /// Repository for restaurant.
         /// </summary>
-        private readonly IGenericRepository<Restaurant> _repository;
+        private readonly IRestaurantService _service;
 
         /// <summary>
         /// Logger instance.
@@ -24,11 +28,11 @@ namespace Saal.API.Controllers.API
         /// <summary>
         /// Restaurant controller constructor.
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="service">uow implementation for restaurant.</param>
         /// <param name="logger">Logger instance.</param>
-        public RestaurantController(IGenericRepository<Restaurant> repository, ILogger<RestaurantController> logger)
+        public RestaurantController(IRestaurantService service, ILogger<RestaurantController> logger)
         {
-            _repository = repository;
+            _service = service;
             _logger = logger;
         }
 
@@ -43,56 +47,71 @@ namespace Saal.API.Controllers.API
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(int id)
         {
-            var restaurant = await _repository.GetById(id);
-            if (restaurant == null)
+            var result = await _service.Get(id);
+            return result.StatusCode switch
             {
-                _logger.LogWarning("Restaurant not found.");
-                return NotFound();
-            }
-
-            return Ok(restaurant);
+                HttpStatusCode.OK => Ok(result.Content),
+                HttpStatusCode.NotFound => NotFound(id),
+            };
         }
 
         /// <summary>
         /// Get all restaurants.
         /// </summary>
-        /// <response code="200">OK. Returns a restaurant.</response>        
+        /// <response code="200">OK. Returns a restaurant.</response>
+        /// <response code="404">Not Found. The set seems to be empty.</response>              
         [HttpGet("")]
         [ProducesResponseType(typeof(IEnumerable<Restaurant>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAll()
         {
-            var restaurants = await _repository.GetAll();
-
-            return Ok(restaurants);
+            var result = await _service.GetAll();
+            return result.StatusCode switch
+            {
+                HttpStatusCode.OK => Ok(result.Content),
+                HttpStatusCode.NotFound => NotFound(),
+            };
         }
 
         /// <summary>
         /// Add a new restaurant.
         /// </summary>
-        /// <response code="200">OK. Returns a restaurant.</response>        
+        /// <param name="request">Restaurant request to add.</param>
+        /// <response code="200">OK. Returns a restaurant.</response>
+        /// <response code="400">Bad Request.</response>        
+        /// <response code="404">Not Found.</response>        
         [HttpPost("")]
         [ProducesResponseType(typeof(Restaurant), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Add(Restaurant restaurant)
+        public async Task<IActionResult> Add(RestaurantRequest request)
         {
-            var addedRestaurant = await _repository.Add(restaurant);
-
-            return Ok(addedRestaurant);
+            var result = await _service.Add(request);
+            return result.StatusCode switch
+            {
+                HttpStatusCode.OK => Ok(result.Content),
+                HttpStatusCode.NotFound => NotFound(),
+            };
         }
 
         /// <summary>
         /// Update an existant restaurant.
         /// </summary>
-        /// <response code="200">OK. Returns a restaurant.</response>        
+        /// <response code="200">OK. Returns a restaurant.</response>
+        /// <response code="400">Bad Request.</response>        
+        /// <response code="404">Not Found.</response>        
         [HttpPut("")]
         [ProducesResponseType(typeof(Restaurant), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update(Restaurant restaurant)
+        public async Task<IActionResult> Update(RestaurantRequest request)
         {
-            var updatedRestaurant = await _repository.Update(restaurant);
-
-            return Ok(updatedRestaurant);
+            var result = await _service.Update(request);
+            return result.StatusCode switch
+            {
+                HttpStatusCode.OK => Ok(result.Content),
+                HttpStatusCode.NotFound => NotFound(),
+            };
         }
 
         /// <summary>
@@ -102,11 +121,14 @@ namespace Saal.API.Controllers.API
         [HttpDelete("")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(Restaurant restaurant)
+        public async Task<IActionResult> Delete(int id)
         {
-            await _repository.Delete(restaurant);
-
-            return Ok();
+            var result = await _service.Delete(id);
+            return result.StatusCode switch
+            {
+                HttpStatusCode.NoContent => NoContent(),
+                HttpStatusCode.NotFound => NotFound(),
+            };
         }
     }
 }

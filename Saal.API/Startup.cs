@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Saal.API.Data;
 using Saal.API.Repository;
+using Saal.API.Services.Interfaces;
+using Saal.API.Services;
 
 namespace Saal.API
 {
@@ -40,6 +42,8 @@ namespace Saal.API
             });
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped(typeof(IRestaurantService), typeof(RestaurantService));
+            services.AddAutoMapper(typeof(MappingProfile));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
