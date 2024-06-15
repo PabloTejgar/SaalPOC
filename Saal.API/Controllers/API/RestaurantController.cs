@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
 using Saal.API.DTO.Request;
+using Saal.API.DTO.Response;
 using Saal.API.Models;
 using Saal.API.Repository;
 using Saal.API.Services.Interfaces;
@@ -43,7 +44,7 @@ namespace Saal.API.Controllers.API
         /// <response code="200">OK. Returns a restaurant.</response>        
         /// <response code="404">Not Found. That restaurant doesn't exist.</response>              
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(Restaurant), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RestaurantResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(int id)
         {
@@ -61,7 +62,7 @@ namespace Saal.API.Controllers.API
         /// <response code="200">OK. Returns a restaurant.</response>
         /// <response code="404">Not Found. The set seems to be empty.</response>              
         [HttpGet("")]
-        [ProducesResponseType(typeof(IEnumerable<Restaurant>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<RestaurantResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAll()
         {
@@ -81,7 +82,7 @@ namespace Saal.API.Controllers.API
         /// <response code="400">Bad Request.</response>        
         /// <response code="404">Not Found.</response>        
         [HttpPost("")]
-        [ProducesResponseType(typeof(Restaurant), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RestaurantResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Add(RestaurantRequest request)
@@ -101,7 +102,7 @@ namespace Saal.API.Controllers.API
         /// <response code="400">Bad Request.</response>        
         /// <response code="404">Not Found.</response>        
         [HttpPut("")]
-        [ProducesResponseType(typeof(Restaurant), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RestaurantResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update(RestaurantRequest request)

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Saal.API.Controllers.API;
 using Saal.API.DTO.Request;
+using Saal.API.DTO.Response;
 using Saal.API.Models;
 using Saal.API.Repository;
 using Saal.API.Services.Interfaces;
@@ -74,10 +75,11 @@ namespace Saal.API.Services
 
             var entityToAdd = _automapper.Map<Restaurant>(entity);
             var entityAdded = await _repository.Update(entityToAdd);
+            var restaurantResponse = _automapper.Map<RestaurantResponse>(entityAdded);
 
             return new HttpResponseMessage()
             {
-                Content = new ObjectContent<Restaurant>(entityAdded, new JsonMediaTypeFormatter()),
+                Content = new ObjectContent<RestaurantResponse>(restaurantResponse, new JsonMediaTypeFormatter()),
                 StatusCode = HttpStatusCode.OK,
             };
         }
@@ -118,9 +120,11 @@ namespace Saal.API.Services
                 };
             }
 
+            var restaurantResponse = _automapper.Map<RestaurantResponse>(entity);
+
             return new HttpResponseMessage()
             {
-                Content = new ObjectContent<Restaurant>(entity, new JsonMediaTypeFormatter()),
+                Content = new ObjectContent<RestaurantResponse>(restaurantResponse, new JsonMediaTypeFormatter()),
                 StatusCode = HttpStatusCode.OK,
             };
         }
@@ -140,9 +144,11 @@ namespace Saal.API.Services
                 };
             }
 
+            var restaurantlistResponse = _automapper.Map<IEnumerable<RestaurantResponse>>(listOfEntity);
+
             return new HttpResponseMessage()
             {
-                Content = new ObjectContent<IEnumerable<Restaurant>>(listOfEntity, new JsonMediaTypeFormatter()),
+                Content = new ObjectContent<IEnumerable<RestaurantResponse>>(restaurantlistResponse, new JsonMediaTypeFormatter()),
                 StatusCode = HttpStatusCode.OK,
             };
 
