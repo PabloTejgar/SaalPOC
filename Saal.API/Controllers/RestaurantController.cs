@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Saal.API.Data;
 using Saal.API.Models;
 using Saal.API.Repository;
 
@@ -9,6 +7,8 @@ namespace Saal.API.Controllers
     /// <summary>
     /// Restaurant controller.
     /// </summary>
+    [ApiController]
+    [Route("[controller]")]
     public class RestaurantController : Controller
     {
         /// <summary>
@@ -51,6 +51,62 @@ namespace Saal.API.Controllers
             }
 
             return Ok(restaurant);
+        }
+
+        /// <summary>
+        /// Get all restaurants.
+        /// </summary>
+        /// <response code="200">OK. Returns a restaurant.</response>        
+        [HttpGet("")]
+        [ProducesResponseType(typeof(IEnumerable<Restaurant>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAll()
+        {
+            var restaurants = await _repository.GetAll();
+
+            return Ok(restaurants);
+        }
+
+        /// <summary>
+        /// Add a new restaurant.
+        /// </summary>
+        /// <response code="200">OK. Returns a restaurant.</response>        
+        [HttpPost("")]
+        [ProducesResponseType(typeof(Restaurant), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Add(Restaurant restaurant)
+        {
+            var addedRestaurant = await _repository.Add(restaurant);
+
+            return Ok(addedRestaurant);
+        }
+
+        /// <summary>
+        /// Update an existant restaurant.
+        /// </summary>
+        /// <response code="200">OK. Returns a restaurant.</response>        
+        [HttpPut("")]
+        [ProducesResponseType(typeof(Restaurant), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Update(Restaurant restaurant)
+        {
+            var updatedRestaurant = await _repository.Update(restaurant);
+
+            return Ok(updatedRestaurant);
+        }
+
+        /// <summary>
+        /// Delete a restaurant.
+        /// </summary>
+        /// <response code="200">OK. Returns a restaurant.</response>        
+        [HttpDelete("")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(Restaurant restaurant)
+        {
+            await _repository.Delete(restaurant);
+
+            return Ok();
         }
     }
 }

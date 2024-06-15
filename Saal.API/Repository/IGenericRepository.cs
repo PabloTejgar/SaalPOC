@@ -12,19 +12,19 @@ namespace Saal.API.Repository
         /// Add operation.
         /// </summary>
         /// <param name="entity">entity to add.</param>
-        public void Add(T entity);
+        public Task<T> Add(T entity);
 
         /// <summary>
         /// Delete operation.
         /// </summary>
         /// <param name="entity">entity to delete.</param>
-        public void Delete(T entity);
+        public Task Delete(T entity);
 
         /// <summary>
         /// Update operation.
         /// </summary>
         /// <param name="entity">entity to update.</param>
-        public void Update(T entity);
+        public Task<T> Update(T entity);
 
         /// <summary>
         /// GetAll operation.

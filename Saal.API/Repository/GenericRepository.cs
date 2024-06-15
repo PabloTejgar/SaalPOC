@@ -29,17 +29,18 @@ namespace Saal.API.Repository
         /// 
         /// </summary>
         /// <param name="entity"></param>
-        public async void Add(T entity)
+        public async Task<T> Add(T entity)
         {
             baseSet.Add(entity);
             await context.SaveChangesAsync();
+            return entity;
         }
 
         /// <summary>
         /// Delete operation.
         /// </summary>
         /// <param name="entity">entity to delete.</param>
-        public async void Delete(T entity)
+        public async Task Delete(T entity)
         {
             baseSet.Remove(entity);
             await context.SaveChangesAsync();
@@ -68,10 +69,11 @@ namespace Saal.API.Repository
         /// Update operation.
         /// </summary>
         /// <param name="entity">entity to update.</param>
-        public async void Update(T entity)
+        public async Task<T> Update(T entity)
         {
             context.Update(entity);
             await context.SaveChangesAsync();
+            return entity;
         }
     }
 }
