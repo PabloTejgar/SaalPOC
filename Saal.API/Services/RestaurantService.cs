@@ -66,6 +66,15 @@ namespace Saal.API.Services
         /// <param name="entity">Entity to update.</param>
         public async Task<HttpResponseMessage> Update(RestaurantRequest entity)
         {
+            if(entity.Id == null)
+            {
+                return new HttpResponseMessage()
+                {
+                    Content = new StringContent("Entity ID cannot be null for update method."),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+            }
+
             var validation = ValidateEntity(entity);
 
             if (validation.StatusCode != HttpStatusCode.OK)

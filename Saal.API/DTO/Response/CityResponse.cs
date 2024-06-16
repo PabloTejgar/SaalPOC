@@ -16,5 +16,10 @@ namespace Saal.API.DTO.Response
         /// Name field.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Restaurants field.
+        /// </summary>
+        public IEnumerable<RestaurantResponse> Restaurants { get; set; }
     }
 }

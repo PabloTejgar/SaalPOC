@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Saal.API.DTO.Response;
 using Saal.API.Models;
 using Saal.API.Services.Interfaces;
 using System.Net;
+using System.Text.Json;
 
 namespace Saal.API.Controllers.API
 {
@@ -37,15 +39,22 @@ namespace Saal.API.Controllers.API
         /// <response code="200">OK. Returns a city.</response>        
         /// <response code="404">Not Found. That city doesn't exist.</response>              
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(City), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(int id)
         {
             var result = await _service.Get(id);
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+                var content = await result.Content.ReadAsStringAsync();
+                var city = JsonSerializer.Deserialize<CityResponse>(content);
+                return Ok(city);
+            }
+
             return result.StatusCode switch
             {
-                HttpStatusCode.OK => Ok(result.Content),
                 HttpStatusCode.NotFound => NotFound(id),
+                _ => StatusCode((int)result.StatusCode, result.Content)
             };
         }
 
@@ -54,15 +63,23 @@ namespace Saal.API.Controllers.API
         /// </summary>
         /// <response code="200">OK. Returns a list of cities.</response>        
         [HttpGet("")]
-        [ProducesResponseType(typeof(IEnumerable<City>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<CityResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAll()
         {
             var result = await _service.GetAll();
+
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+                var content = await result.Content.ReadAsStringAsync();
+                var cityList = JsonSerializer.Deserialize<IEnumerable<CityResponse>>(content);
+                return Ok(cityList);
+            }
+
             return result.StatusCode switch
             {
-                HttpStatusCode.OK => Ok(result.Content),
                 HttpStatusCode.NotFound => NotFound(),
+                _ => StatusCode((int)result.StatusCode, result.Content)
             };
         }
     }

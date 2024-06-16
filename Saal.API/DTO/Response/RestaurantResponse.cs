@@ -1,4 +1,6 @@
-﻿namespace Saal.API.DTO.Response
+﻿using System.Text.Json.Serialization;
+
+namespace Saal.API.DTO.Response
 {
     /// <summary>
     /// Restaurant response dto.

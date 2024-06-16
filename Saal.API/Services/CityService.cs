@@ -5,10 +5,13 @@ using System.Net;
 using AutoMapper;
 using Saal.API.Models;
 using Saal.API.Repository;
+using Saal.API.Services.Interfaces;
+using System.Text;
+using System.Text.Json;
 
 namespace Saal.API.Services
 {
-    public class CityService
+    public class CityService : ICityService
     {
         /// <summary>
         /// Repository for city.
@@ -70,11 +73,11 @@ namespace Saal.API.Services
                 };
             }
 
-            var citylistResponse = _automapper.Map<IEnumerable<CityResponse>>(listOfEntity);
+            var cityListResponse = _automapper.Map<IEnumerable<CityResponse>>(listOfEntity);
 
             return new HttpResponseMessage()
             {
-                Content = new ObjectContent<IEnumerable<CityResponse>>(citylistResponse, new JsonMediaTypeFormatter()),
+                Content = new StringContent(JsonSerializer.Serialize(cityListResponse), Encoding.UTF8, "application/json"),
                 StatusCode = HttpStatusCode.OK,
             };
 

@@ -6,6 +6,11 @@
     public class RestaurantRequest
     {
         /// <summary>
+        /// Nullable id
+        /// </summary>
+        public int? Id { get; set; }
+
+        /// <summary>
         /// Name field.
         /// </summary>
         public string Name { get; set; }

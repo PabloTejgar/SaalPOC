@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Saal.API.DTO.Request;
 using Saal.API.DTO.Response;
+using Saal.API.Models;
 using Saal.API.Services.Interfaces;
 using System.Net;
+using System.Text.Json;
 
 namespace Saal.API.Controllers.API
 {
@@ -46,10 +48,17 @@ namespace Saal.API.Controllers.API
         public async Task<IActionResult> Get(int id)
         {
             var result = await _service.Get(id);
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+                var content = await result.Content.ReadAsStringAsync();
+                var restaurant = JsonSerializer.Deserialize<RestaurantResponse>(content);
+                return Ok(restaurant);
+            }
+
             return result.StatusCode switch
             {
-                HttpStatusCode.OK => Ok(result.Content),
                 HttpStatusCode.NotFound => NotFound(id),
+                _ => StatusCode((int)result.StatusCode, result.Content)
             };
         }
 
@@ -64,10 +73,17 @@ namespace Saal.API.Controllers.API
         public async Task<IActionResult> GetAll()
         {
             var result = await _service.GetAll();
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+                var content = await result.Content.ReadAsStringAsync();
+                var restaurantList = JsonSerializer.Deserialize<IEnumerable<RestaurantResponse>>(content);
+                return Ok(restaurantList);
+            }
+
             return result.StatusCode switch
             {
-                HttpStatusCode.OK => Ok(result.Content),
-                HttpStatusCode.NotFound => NotFound(),
+                HttpStatusCode.NotFound => NotFound(result.Content),
+                _ => StatusCode((int)result.StatusCode, result.Content)
             };
         }
 
@@ -81,14 +97,20 @@ namespace Saal.API.Controllers.API
         [HttpPost("")]
         [ProducesResponseType(typeof(RestaurantResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Add(RestaurantRequest request)
         {
             var result = await _service.Add(request);
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+                var content = await result.Content.ReadAsStringAsync();
+                var restaurant = JsonSerializer.Deserialize<RestaurantResponse>(content);
+                return Ok(restaurant);
+            }
+
             return result.StatusCode switch
             {
-                HttpStatusCode.OK => Ok(result.Content),
-                HttpStatusCode.NotFound => NotFound(),
+                HttpStatusCode.BadRequest => BadRequest(result.Content),
+                _ => StatusCode((int)result.StatusCode, result.Content)
             };
         }
 
@@ -98,17 +120,26 @@ namespace Saal.API.Controllers.API
         /// <response code="200">OK. Returns a restaurant.</response>
         /// <response code="400">Bad Request.</response>        
         /// <response code="404">Not Found.</response>        
-        [HttpPut("")]
+        [HttpPut()]
         [ProducesResponseType(typeof(RestaurantResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update(RestaurantRequest request)
         {
             var result = await _service.Update(request);
+
+            if(result.StatusCode == HttpStatusCode.OK)
+            {
+                var content = await result.Content.ReadAsStringAsync();
+                var restaurant = JsonSerializer.Deserialize<RestaurantResponse>(content);
+                return Ok(restaurant);
+            }
+
             return result.StatusCode switch
             {
-                HttpStatusCode.OK => Ok(result.Content),
+                HttpStatusCode.BadRequest => BadRequest(result.Content),
                 HttpStatusCode.NotFound => NotFound(),
+                _ => StatusCode((int)result.StatusCode, result.Content)
             };
         }
 
@@ -126,6 +157,7 @@ namespace Saal.API.Controllers.API
             {
                 HttpStatusCode.NoContent => NoContent(),
                 HttpStatusCode.NotFound => NotFound(),
+                _ => StatusCode((int)result.StatusCode, result.Content)
             };
         }
     }
