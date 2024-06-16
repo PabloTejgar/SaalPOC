@@ -30,8 +30,8 @@ namespace Saal.API.Controllers.Mvc
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var restaurantResponse = await _httpClient.GetAsync("https://localhost:5001/Restaurant");
-            var cityResponse = await _httpClient.GetAsync("https://localhost:5001/City");
+            var restaurantResponse = await _httpClient.GetAsync("Restaurant");
+            var cityResponse = await _httpClient.GetAsync("City");
 
             restaurantResponse.EnsureSuccessStatusCode();
             cityResponse.EnsureSuccessStatusCode();
@@ -69,7 +69,7 @@ namespace Saal.API.Controllers.Mvc
             var jsonString = JsonSerializer.Serialize(restaurant);
             var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("https://localhost:5001/Restaurant", content);
+            var response = await _httpClient.PostAsync("Restaurant", content);
             response.EnsureSuccessStatusCode();
 
             // Optionally: You can check the response to see if the post was successful and handle accordingly

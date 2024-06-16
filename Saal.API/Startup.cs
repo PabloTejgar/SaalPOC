@@ -5,6 +5,7 @@ using Saal.API.Data;
 using Saal.API.Repository;
 using Saal.API.Services.Interfaces;
 using Saal.API.Services;
+using Saal.API.Controllers.Mvc;
 
 namespace Saal.API
 {
@@ -27,9 +28,14 @@ namespace Saal.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped(sp => new HttpClient
+            {
+                BaseAddress = new Uri(Configuration["ApiSettings:BaseUrl"])
+            });
+
             services.AddControllers();
             services.AddControllersWithViews();
-            services.AddHttpClient();
+
             services.AddDbContext<SaalContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("SaalContext"));
