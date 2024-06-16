@@ -13,14 +13,13 @@ namespace Saal.API
             CreateMap<RestaurantRequest, Restaurant>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
-                .ForMember(dest => dest.CityId, opt => opt.MapFrom(src => src.CityId))
-                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone));
+                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone))
+                .ForMember(dest => dest.CityId, opt => opt.MapFrom(src => src.CityId));
 
             CreateMap<Restaurant, RestaurantResponse>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
-                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.Name))
                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone));
             CreateMap<Restaurant, RestaurantResponse>().ReverseMap();
 

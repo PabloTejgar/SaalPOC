@@ -3,6 +3,7 @@ using System.Text.Json;
 using Saal.API.DTO.Response;
 using System.Text;
 using Saal.API.DTO.Request;
+using Saal.API.ViewModel;
 
 namespace Saal.API.Controllers.Mvc
 {
@@ -29,19 +30,33 @@ namespace Saal.API.Controllers.Mvc
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var response = await _httpClient.GetAsync("https://localhost:5001/Restaurant");
-            response.EnsureSuccessStatusCode();
+            var restaurantResponse = await _httpClient.GetAsync("https://localhost:5001/Restaurant");
+            var cityResponse = await _httpClient.GetAsync("https://localhost:5001/City");
 
-            var responseString = await response.Content.ReadAsStringAsync();
+            restaurantResponse.EnsureSuccessStatusCode();
+            cityResponse.EnsureSuccessStatusCode();
+
+
+            var restaurantResponseString = await restaurantResponse.Content.ReadAsStringAsync();
+            var cityResponseString = await cityResponse.Content.ReadAsStringAsync();
+
             var options = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 PropertyNameCaseInsensitive = true
             };
 
-            var restaurants = JsonSerializer.Deserialize<List<RestaurantResponse>>(responseString, options);
+            var restaurants = JsonSerializer.Deserialize<List<RestaurantResponse>>(restaurantResponseString, options);
+            var cities = JsonSerializer.Deserialize<List<CityResponse>>(cityResponseString, options);
 
-            return View(restaurants);
+            var viewModel = new RestaurantViewModel
+            {
+                Restaurants = restaurants,
+                Cities = cities
+            };
+
+
+            return View(viewModel);
         }
 
         /// <summary>

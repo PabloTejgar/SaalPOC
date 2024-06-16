@@ -26,7 +26,7 @@
         public string Phone { get; set; }
 
         /// <summary>
-        /// CityId field.
+        /// City field.
         /// </summary>
         public int CityId { get; set; }
     }
