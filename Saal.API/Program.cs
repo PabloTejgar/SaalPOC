@@ -7,6 +7,7 @@ namespace Saal.API
         /// </summary>
         /// <param name="args">Main args.</param>
         public static void Main(string[] args)
+        
         {
             CreateHostBuilder(args).Build().Run();
         }
